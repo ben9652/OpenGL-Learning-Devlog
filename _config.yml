@@ -1,0 +1,30 @@
+# Configuración del sitio. Ajustar si el repo cambia de nombre.
+title: "Ruta OpenGL desde cero"
+description: "Devlog de mi aprendizaje de OpenGL: cada parte con su video y su texto completo en español e inglés."
+
+# Cambiar TU-USUARIO por tu usuario real de GitHub.
+url: "https://ben9652.github.io"
+# Debe coincidir con el nombre del repositorio (sin barras).
+baseurl: "/opengl-devlog"
+github_url: ""
+
+collections:
+  devlog:
+    output: true
+    permalink: /devlog/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: "devlog"
+    values:
+      layout: "post"
+
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+exclude:
+  - README.md

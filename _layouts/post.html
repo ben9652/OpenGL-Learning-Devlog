@@ -1,0 +1,21 @@
+---
+layout: default
+---
+<article class="post">
+  <header class="post-header">
+    <h1>Parte {{ page.part }} — {{ page.title }}</h1>
+    <p class="post-meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y-%m-%d" }}</time>
+      {% if page.video %}<span> · Video: {{ page.video }}</span>{% endif %}
+      {% if page.linkedin and page.linkedin != "" %}<span> · <a href="{{ page.linkedin }}">LinkedIn</a></span>{% endif %}
+    </p>
+  </header>
+
+  <div class="post-content">
+    {{ content }}
+  </div>
+
+  <nav class="post-nav">
+    <a href="{{ '/' | relative_url }}">← Volver al índice</a>
+  </nav>
+</article>
