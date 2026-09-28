@@ -77,17 +77,17 @@ Levantar el sitio, incluyendo los borradores de `_drafts/`:
 jekyll serve --drafts
 ```
 
-Se ve en `http://localhost:4000/opengl-devlog/`.
+Se ve en `http://localhost:4000/` más el `baseurl` configurado.
 
 ## Publicar en GitHub Pages
 
-1. Crear un repositorio **público** llamado `opengl-devlog` (o cambiar `baseurl` en `_config.yml` si usás otro nombre).
-2. Editar `_config.yml` y reemplazar `TU-USUARIO` por tu usuario en `url`.
-3. `git init && git add -A && git commit -m "Sitio inicial" && git remote add origin  && git push -u origin main`
-4. En el repo: **Settings → Pages → Deploy from a branch → main / (root) → Save**.
-5. Esperar un minuto y entrar a `https://TU-USUARIO.github.io/opengl-devlog/`.
+1. Crear un repositorio **público** cuyo nombre coincida con `baseurl` en `_config.yml`.
+2. Editar `_config.yml`: `url` debe ser `https://TU-USUARIO.github.io`.
+3. Inicializar git, commitear y subir el contenido (GitHub te da los comandos exactos al crear el repositorio).
+4. En el repo: **Settings → Pages → Deploy from a branch → master / (root) → Save**.
+5. Esperar un minuto y abrir la URL que GitHub Pages indique.
 
 ## Enlazar desde LinkedIn
 
-Cada parte queda en `https://TU-USUARIO.github.io/opengl-devlog/devlog/parte-XX-tema/`.
+Cada parte queda en la URL del sitio más `devlog/parte-XX-tema/`.
 Ese es el link que va en el primer comentario de la publicación.
