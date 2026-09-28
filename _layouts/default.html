@@ -31,5 +31,33 @@
       <p>Texto completo en español e inglés · <a href="{{ site.github_url }}">código y devlog</a></p>
     </div>
   </footer>
+
+  <script>
+    (function () {
+      var es = document.getElementById('lang-es');
+      var en = document.getElementById('lang-en');
+      if (!es || !en) return;
+
+      function apply() {
+        document.body.classList.toggle('show-en', en.checked);
+      }
+
+      try {
+        if (localStorage.getItem('devlog-lang') === 'en') en.checked = true;
+      } catch (e) {}
+
+      es.addEventListener('change', function () {
+        try { localStorage.setItem('devlog-lang', 'es'); } catch (e) {}
+        apply();
+      });
+
+      en.addEventListener('change', function () {
+        try { localStorage.setItem('devlog-lang', 'en'); } catch (e) {}
+        apply();
+      });
+
+      apply();
+    })();
+  </script>
 </body>
 </html>

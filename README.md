@@ -28,7 +28,21 @@ _drafts/               borradores (ignorados por git, no se publican)
    ---
    ```
 
-2. Escribir el contenido con `## Español` y `## English`.
+2. Escribir el contenido en dos bloques, uno por idioma (el selector de la página los alterna):
+
+   ```html
+   <div class="lang-es" markdown="1">
+
+   Texto en español...
+
+   </div>
+
+   <div class="lang-en" markdown="1">
+
+   Text in English...
+
+   </div>
+   ```
 3. Para publicarla, mover el archivo a `_devlog/` y agregar el link de LinkedIn en `linkedin:`.
 4. El índice se actualiza solo (recorre `_devlog` ordenado por `part`).
 

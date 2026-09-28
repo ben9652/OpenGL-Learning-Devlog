@@ -6,7 +6,7 @@ video: "1. Armando un entorno con CMake"
 linkedin: ""
 ---
 
-## Español
+<div class="lang-es" markdown="1">
 
 Este es el primer paso que me impuse para empezar con este proyecto para aprendizaje de OpenGL: aprender CMake para armarme un entorno en el que pueda tener submódulos o cualquier tipo de capa de abstracción que se me ocurra, y así organizar mucho mejor el proyecto.
 
@@ -22,7 +22,9 @@ Finalmente, hago una prueba usando ese sub-módulo, y termina el armado de mi en
 
 Nota aparte: otra cosa que me encanta de esta capa de personalización Omarchy en mi sistema operativo es que tiene una radio con música lofi y es eso lo que escuchan de fondo y con lo que programo, y posiblemente esté también en el resto de videos que suba.
 
-## English
+</div>
+
+<div class="lang-en" markdown="1">
 
 This is the first step I set for myself to start with this learning project on OpenGL: learn CMake in order to build an environment with submodules or any kind of abstraction layer I come up with, organizing in a better way the project.
 
@@ -37,3 +39,5 @@ In the instruction `add_subdirectory()` from the root CMake file you gotta speci
 Lastly, I make a test using that sub-module, and I'm done with the environment.
 
 Side note: another thing I love about this customization layer "Omarchy" in this OS is the fact that it has an already installed radio with lo-fi music and that's what you're hearing in the background and what I code with, and it'll be possibly included in the rest of the videos I upload.
+
+</div>
