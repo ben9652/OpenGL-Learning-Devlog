@@ -82,7 +82,7 @@ Se ve en `http://localhost:4000/opengl-devlog/`.
 ## Publicar en GitHub Pages
 
 1. Crear un repositorio **público** llamado `opengl-devlog` (o cambiar `baseurl` en `_config.yml` si usás otro nombre).
-2. Editar `_config.yml` y reemplazar `TU-USUARIO` por tu usuario en `url` y `github_url`.
+2. Editar `_config.yml` y reemplazar `TU-USUARIO` por tu usuario en `url`.
 3. `git init && git add -A && git commit -m "Sitio inicial" && git remote add origin  && git push -u origin main`
 4. En el repo: **Settings → Pages → Deploy from a branch → main / (root) → Save**.
 5. Esperar un minuto y entrar a `https://TU-USUARIO.github.io/opengl-devlog/`.

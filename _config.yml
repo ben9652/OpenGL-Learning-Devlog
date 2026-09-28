@@ -6,7 +6,6 @@ description: "Devlog de mi aprendizaje de OpenGL: cada parte con su video y su t
 url: "https://ben9652.github.io"
 # Debe coincidir EXACTAMENTE con el nombre del repositorio (respeta mayúsculas).
 baseurl: "/OpenGL-Learning-Devlog"
-github_url: ""
 
 collections:
   devlog:
