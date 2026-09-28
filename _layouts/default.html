@@ -13,19 +13,23 @@
 </head>
 <body>
   <header class="site-header">
-    <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
-    <nav>
-      <a href="{{ '/' | relative_url }}">Inicio</a>
-      <a href="{{ site.github_url }}">GitHub</a>
-    </nav>
+    <div class="inner">
+      <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+      <nav>
+        <a href="{{ '/' | relative_url }}">inicio</a>
+        <a href="{{ site.github_url }}">github</a>
+      </nav>
+    </div>
   </header>
 
-  <main>
+  <main class="inner">
     {{ content }}
   </main>
 
   <footer class="site-footer">
-    <p>Texto completo en español e inglés · <a href="{{ site.github_url }}">código y devlog</a></p>
+    <div class="inner">
+      <p>Texto completo en español e inglés · <a href="{{ site.github_url }}">código y devlog</a></p>
+    </div>
   </footer>
 </body>
 </html>

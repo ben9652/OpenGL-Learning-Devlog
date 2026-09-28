@@ -2,10 +2,9 @@
 title: "Ruta OpenGL desde cero"
 description: "Devlog de mi aprendizaje de OpenGL: cada parte con su video y su texto completo en español e inglés."
 
-# Cambiar TU-USUARIO por tu usuario real de GitHub.
 url: "https://ben9652.github.io"
-# Debe coincidir con el nombre del repositorio (sin barras).
-baseurl: "/opengl-devlog"
+# Debe coincidir EXACTAMENTE con el nombre del repositorio (respeta mayúsculas).
+baseurl: "/OpenGL-Learning-Devlog"
 github_url: ""
 
 collections:
