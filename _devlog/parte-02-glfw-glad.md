@@ -3,7 +3,7 @@ title: "GLFW y GLAD"
 title_en: "GLFW and GLAD"
 part: 2
 date: 2026-09-20
-video: "2. Importo GLFW y GLAD"
+video_file: "parte-02.mp4"
 linkedin: ""
 ---
 

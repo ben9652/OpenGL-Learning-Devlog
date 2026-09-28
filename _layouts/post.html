@@ -4,13 +4,20 @@ layout: default
 <article class="post">
   <header class="post-header">
     <h1 data-es="Parte {{ page.part }} — {{ page.title }}"
-        data-en="Part {{ page.part }} — {{ page.title_en }}">Parte {{ page.part }} — {{ page.title }}</h1>
+        data-en="Part {{ page.part }} — {{ page.title_en }}">Part {{ page.part }} — {{ page.title_en }}</h1>
     <p class="post-meta">
       <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y-%m-%d" }}</time>
-      {% if page.video %}<span> · Video: {{ page.video }}</span>{% endif %}
       {% if page.linkedin and page.linkedin != "" %}<span> · <a href="{{ page.linkedin }}">LinkedIn</a></span>{% endif %}
     </p>
   </header>
+
+  {% if page.video_file %}
+  <div class="post-video">
+    <video controls preload="metadata" playsinline>
+      <source src="{{ '/assets/video/' | append: page.video_file | relative_url }}" type="video/mp4">
+    </video>
+  </div>
+  {% endif %}
 
   <div class="post-content">
     {{ content }}
@@ -18,6 +25,6 @@ layout: default
 
   <nav class="post-nav">
     <a href="{{ '/' | relative_url }}"
-       data-es="← Volver al índice" data-en="← Back to index">← Volver al índice</a>
+       data-es="← Volver al índice" data-en="← Back to index">← Back to index</a>
   </nav>
 </article>

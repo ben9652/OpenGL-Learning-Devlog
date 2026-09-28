@@ -10,6 +10,7 @@ index.md               índice generado con la lista de partes
 _layouts/              plantillas (default y post)
 assets/css/style.css   tema oscuro
 assets/img/            imágenes de los posts
+assets/video/          videos de las partes (MP4 comprimido)
 _devlog/               partes publicadas (una por archivo)
 _drafts/               borradores (ignorados por git, no se publican)
 ```
@@ -24,7 +25,7 @@ _drafts/               borradores (ignorados por git, no se publican)
    title_en: "Part topic in English"
    part: X
    date: 2026-10-05
-   video: "X. Nombre del video"
+   video_file: "parte-XX.mp4"
    linkedin: ""
    ---
    ```
@@ -48,6 +49,20 @@ _drafts/               borradores (ignorados por git, no se publican)
    ```
 3. Para publicarla, mover el archivo a `_devlog/` y agregar el link de LinkedIn en `linkedin:`.
 4. El índice se actualiza solo (recorre `_devlog` ordenado por `part`).
+
+## Videos
+
+El sitio arranca en inglés y el selector lo cambia todo a español; la elección se recuerda en el navegador.
+
+Los videos se transcodifican a 1080p para que pesen poco y se muestran arriba del texto:
+
+```bash
+ffmpeg -i original.mp4 -vf "scale=1920:-2" -c:v libx264 -preset medium \
+  -crf 24 -pix_fmt yuv420p -c:a aac -b:a 128k -movflags +faststart \
+  assets/video/parte-XX.mp4
+```
+
+Cada parte lo referencia en su front matter con `video_file: "parte-XX.mp4"`.
 
 ## Imágenes
 

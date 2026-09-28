@@ -6,11 +6,11 @@
   {% capture t_en %}{{ site.title_en }}{% endcapture %}
 {% endif %}
 <!doctype html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ t_es }}</title>
+  <title>{{ t_en }}</title>
   <meta name="description" content="{{ page.description | default: site.description }}">
   <link rel="icon" type="image/svg+xml" href="{{ '/assets/favicon.svg' | relative_url }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,17 +22,17 @@
   <header class="site-header">
     <div class="inner">
       <a class="site-title" href="{{ '/' | relative_url }}"
-         data-es="{{ site.title_es }}" data-en="{{ site.title_en }}">{{ site.title_es }}</a>
+         data-es="{{ site.title_es }}" data-en="{{ site.title_en }}">{{ site.title_en }}</a>
       <nav>
-        <a href="{{ '/' | relative_url }}" data-es="inicio" data-en="home">inicio</a>
+        <a href="{{ '/' | relative_url }}" data-es="inicio" data-en="home">home</a>
       </nav>
     </div>
   </header>
 
   <main class="inner">
     <div class="lang-controls">
-      <input type="radio" name="lang" id="lang-es" checked>
-      <input type="radio" name="lang" id="lang-en">
+      <input type="radio" name="lang" id="lang-es">
+      <input type="radio" name="lang" id="lang-en" checked>
       <div class="lang-switch">
         <label for="lang-es">Español</label>
         <label for="lang-en">English</label>
@@ -46,7 +46,7 @@
     <div class="inner">
       <p>
         <span data-es="Texto completo en español e inglés"
-              data-en="Full text in Spanish and English">Texto completo en español e inglés</span>
+              data-en="Full text in Spanish and English">Full text in Spanish and English</span>
       </p>
     </div>
   </footer>
@@ -58,25 +58,25 @@
       if (!es || !en) return;
 
       function apply(lang) {
-        var isEn = lang === 'en';
-        document.body.classList.toggle('show-en', isEn);
-        document.documentElement.lang = isEn ? 'en' : 'es';
+        var isEs = lang === 'es';
+        document.body.classList.toggle('show-es', isEs);
+        document.documentElement.lang = isEs ? 'es' : 'en';
 
         var nodes = document.querySelectorAll('[data-es][data-en]');
         for (var i = 0; i < nodes.length; i++) {
           var n = nodes[i];
-          n.textContent = isEn ? n.getAttribute('data-en') : n.getAttribute('data-es');
+          n.textContent = isEs ? n.getAttribute('data-es') : n.getAttribute('data-en');
         }
 
         var b = document.body;
         if (b.dataset.titleEs && b.dataset.titleEn) {
-          document.title = isEn ? b.dataset.titleEn : b.dataset.titleEs;
+          document.title = isEs ? b.dataset.titleEs : b.dataset.titleEn;
         }
       }
 
-      var saved = 'es';
-      try { saved = localStorage.getItem('devlog-lang') || 'es'; } catch (e) {}
-      if (saved === 'en') en.checked = true;
+      var saved = 'en';
+      try { saved = localStorage.getItem('devlog-lang') || 'en'; } catch (e) {}
+      if (saved === 'es') es.checked = true; else en.checked = true;
 
       es.addEventListener('change', function () {
         try { localStorage.setItem('devlog-lang', 'es'); } catch (e) {}
@@ -88,7 +88,7 @@
         apply('en');
       });
 
-      apply(en.checked ? 'en' : 'es');
+      apply(es.checked ? 'es' : 'en');
     })();
   </script>
 </body>

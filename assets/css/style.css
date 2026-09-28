@@ -405,16 +405,31 @@ th { color: #ffffff; }
   color: #001014;
 }
 
-.lang-en {
+.lang-es {
   display: none;
 }
 
-body.show-en .lang-en {
+body.show-es .lang-es {
   display: block;
 }
 
-body.show-en .lang-es {
+body.show-es .lang-en {
   display: none;
+}
+
+/* ---------- Video ---------- */
+
+.post-video {
+  margin: 1.4rem 0 0.6rem;
+}
+
+.post-video video {
+  display: block;
+  width: 100%;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: #000000;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
 }
 
 /* ---------- Pantallas chicas ---------- */
