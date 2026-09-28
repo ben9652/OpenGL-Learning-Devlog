@@ -3,7 +3,8 @@ layout: default
 ---
 <article class="post">
   <header class="post-header">
-    <h1>Parte {{ page.part }} — {{ page.title }}</h1>
+    <h1 data-es="Parte {{ page.part }} — {{ page.title }}"
+        data-en="Part {{ page.part }} — {{ page.title_en }}">Parte {{ page.part }} — {{ page.title }}</h1>
     <p class="post-meta">
       <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y-%m-%d" }}</time>
       {% if page.video %}<span> · Video: {{ page.video }}</span>{% endif %}
@@ -11,20 +12,12 @@ layout: default
     </p>
   </header>
 
-  <div class="lang-controls">
-    <input type="radio" name="lang" id="lang-es" checked>
-    <input type="radio" name="lang" id="lang-en">
-    <div class="lang-switch">
-      <label for="lang-es">Español</label>
-      <label for="lang-en">English</label>
-    </div>
-  </div>
-
   <div class="post-content">
     {{ content }}
   </div>
 
   <nav class="post-nav">
-    <a href="{{ '/' | relative_url }}">← Volver al índice</a>
+    <a href="{{ '/' | relative_url }}"
+       data-es="← Volver al índice" data-en="← Back to index">← Volver al índice</a>
   </nav>
 </article>

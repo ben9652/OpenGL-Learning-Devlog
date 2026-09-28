@@ -1,9 +1,16 @@
+{% if page.part %}
+  {% capture t_es %}Parte {{ page.part }} — {{ page.title }} · {{ site.title_es }}{% endcapture %}
+  {% capture t_en %}Part {{ page.part }} — {{ page.title_en }} · {{ site.title_en }}{% endcapture %}
+{% else %}
+  {% capture t_es %}{{ site.title_es }}{% endcapture %}
+  {% capture t_en %}{{ site.title_en }}{% endcapture %}
+{% endif %}
 <!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% if page.part %}Parte {{ page.part }} — {{ page.title }}{% elsif page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %} · {{ site.title }}</title>
+  <title>{{ t_es }}</title>
   <meta name="description" content="{{ page.description | default: site.description }}">
   <link rel="icon" type="image/svg+xml" href="{{ '/assets/favicon.svg' | relative_url }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,24 +18,39 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 </head>
-<body>
+<body data-title-es="{{ t_es | escape }}" data-title-en="{{ t_en | escape }}">
   <header class="site-header">
     <div class="inner">
-      <a class="site-title" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+      <a class="site-title" href="{{ '/' | relative_url }}"
+         data-es="{{ site.title_es }}" data-en="{{ site.title_en }}">{{ site.title_es }}</a>
       <nav>
-        <a href="{{ '/' | relative_url }}">inicio</a>
+        <a href="{{ '/' | relative_url }}" data-es="inicio" data-en="home">inicio</a>
         <a href="{{ site.github_url }}">github</a>
       </nav>
     </div>
   </header>
 
   <main class="inner">
+    <div class="lang-controls">
+      <input type="radio" name="lang" id="lang-es" checked>
+      <input type="radio" name="lang" id="lang-en">
+      <div class="lang-switch">
+        <label for="lang-es">Español</label>
+        <label for="lang-en">English</label>
+      </div>
+    </div>
+
     {{ content }}
   </main>
 
   <footer class="site-footer">
     <div class="inner">
-      <p>Texto completo en español e inglés · <a href="{{ site.github_url }}">código y devlog</a></p>
+      <p>
+        <span data-es="Texto completo en español e inglés"
+              data-en="Full text in Spanish and English">Texto completo en español e inglés</span>
+        · <a href="{{ site.github_url }}"
+             data-es="código y devlog" data-en="code and devlog">código y devlog</a>
+      </p>
     </div>
   </footer>
 
@@ -38,25 +60,38 @@
       var en = document.getElementById('lang-en');
       if (!es || !en) return;
 
-      function apply() {
-        document.body.classList.toggle('show-en', en.checked);
+      function apply(lang) {
+        var isEn = lang === 'en';
+        document.body.classList.toggle('show-en', isEn);
+        document.documentElement.lang = isEn ? 'en' : 'es';
+
+        var nodes = document.querySelectorAll('[data-es][data-en]');
+        for (var i = 0; i < nodes.length; i++) {
+          var n = nodes[i];
+          n.textContent = isEn ? n.getAttribute('data-en') : n.getAttribute('data-es');
+        }
+
+        var b = document.body;
+        if (b.dataset.titleEs && b.dataset.titleEn) {
+          document.title = isEn ? b.dataset.titleEn : b.dataset.titleEs;
+        }
       }
 
-      try {
-        if (localStorage.getItem('devlog-lang') === 'en') en.checked = true;
-      } catch (e) {}
+      var saved = 'es';
+      try { saved = localStorage.getItem('devlog-lang') || 'es'; } catch (e) {}
+      if (saved === 'en') en.checked = true;
 
       es.addEventListener('change', function () {
         try { localStorage.setItem('devlog-lang', 'es'); } catch (e) {}
-        apply();
+        apply('es');
       });
 
       en.addEventListener('change', function () {
         try { localStorage.setItem('devlog-lang', 'en'); } catch (e) {}
-        apply();
+        apply('en');
       });
 
-      apply();
+      apply(en.checked ? 'en' : 'es');
     })();
   </script>
 </body>

@@ -1,5 +1,6 @@
 ---
 title: "Armando un entorno con CMake"
+title_en: "Setting up an environment with CMake"
 part: 1
 date: 2026-09-17
 video: "1. Armando un entorno con CMake"

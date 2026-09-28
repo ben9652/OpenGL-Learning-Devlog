@@ -1,5 +1,6 @@
 # Configuración del sitio. Ajustar si el repo cambia de nombre.
-title: "Ruta OpenGL desde cero"
+title_es: "Ruta OpenGL desde cero"
+title_en: "OpenGL path from scratch"
 description: "Devlog de mi aprendizaje de OpenGL: cada parte con su video y su texto completo en español e inglés."
 
 url: "https://ben9652.github.io"

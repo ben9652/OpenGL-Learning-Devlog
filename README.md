@@ -21,12 +21,15 @@ _drafts/               borradores (ignorados por git, no se publican)
    ```yaml
    ---
    title: "Tema de la parte"
+   title_en: "Part topic in English"
    part: X
    date: 2026-10-05
    video: "X. Nombre del video"
    linkedin: ""
    ---
    ```
+
+   El sitio usa `title` para español y `title_en` para inglés (título, pestaña y listado).
 
 2. Escribir el contenido en dos bloques, uno por idioma (el selector de la página los alterna):
 
