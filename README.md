@@ -11,7 +11,7 @@ _layouts/              plantillas (default y post)
 assets/css/style.css   tema oscuro
 assets/img/            imágenes de los posts
 assets/video/          videos de las partes (MP4 comprimido)
-tools/                 scripts de conversión de videos
+tools/                 scripts de conversión de videos y estadísticas
 _devlog/               partes publicadas (una por archivo)
 _drafts/               borradores (ignorados por git, no se publican)
 ```
@@ -69,18 +69,29 @@ Busca `3. ...` en `~/Videos/DaVinci-Resolve/OpenGLPath` y genera `assets/video/p
 
 Cada parte lo referencia en su front matter con `video_file: "parte-XX.mp4"`.
 
-## Analítica (GoatCounter)
+## Analítica propia
 
-El sitio puede registrar visitas por artículo con [GoatCounter](https://www.goatcounter.com/) (gratis para uso no comercial, sin cookies, sin banner de consentimiento).
+El sitio registra las visitas en una API propia (Go + MariaDB) que corre en `boeri-lab.ddns.net`:
 
-1. Crear una cuenta y elegir un código de sitio (por ejemplo `ben9652`).
-2. En `_config.yml` completar:
+```text
+POST https://boeri-lab.ddns.net/analytics/hit     (lo llama el sitio)
+GET  https://boeri-lab.ddns.net/analytics/stats   (requiere token)
+```
 
-   ```yaml
-   goatcounter: "ben9652"
-   ```
+El endpoint se configura en `_config.yml` con `analytics_url` (vacío = no se envía nada).
 
-3. Listo: el dashboard muestra las páginas más visitadas, los referrers y los países. Con la variable vacía no se carga ningún script.
+### Estadísticas en la terminal
+
+El token vive en `~/.config/analytics/token` (no se versiona). Ejemplos:
+
+```bash
+./tools/stats.sh                 # últimos 7 días
+./tools/stats.sh --days 30
+./tools/stats.sh --detalle
+./tools/stats.sh --exclude-ip 1.2.3.4   # no contar tus visitas
+```
+
+Las IPs a excluir siempre se pueden dejar en `~/.config/analytics/ignore` (una por línea).
 
 ## Imágenes
 

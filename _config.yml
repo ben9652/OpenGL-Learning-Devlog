@@ -3,9 +3,8 @@ title_es: "Ruta OpenGL desde cero"
 title_en: "OpenGL path from scratch"
 description: "Devlog de mi aprendizaje de OpenGL: cada parte con su video y su texto completo en español e inglés."
 
-# Analítica con GoatCounter (https://www.goatcounter.com/).
-# Vacío = no se carga nada.
-goatcounter: "ben9652"
+# Endpoint de analítica propia (vacío = no se envía nada).
+analytics_url: "https://boeri-lab.ddns.net/analytics/hit"
 
 url: "https://ben9652.github.io"
 # Debe coincidir EXACTAMENTE con el nombre del repositorio (respeta mayúsculas).

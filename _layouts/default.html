@@ -92,9 +92,25 @@
     })();
   </script>
 
-  {% if site.goatcounter and site.goatcounter != "" %}
-  <script data-goatcounter="https://{{ site.goatcounter }}.goatcounter.com/count"
-          async src="https://gc.zgo.at/count.js"></script>
+  {% if site.analytics_url and site.analytics_url != "" %}
+  <script>
+    (function () {
+      try {
+        fetch("{{ site.analytics_url }}", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            path: location.pathname,
+            title: document.title,
+            lang: document.documentElement.lang,
+            referrer: document.referrer || ""
+          }),
+          keepalive: true,
+          mode: "cors"
+        });
+      } catch (e) {}
+    })();
+  </script>
   {% endif %}
 </body>
 </html>
