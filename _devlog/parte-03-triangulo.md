@@ -15,9 +15,11 @@ En resumen, para lograr esto se tiene que armar un programa shader obligatoriame
 
 Un shader está compuesto, de manera obligatoria, por dos tipos de shaders que luego se enlazan para conformar el programa: vertex shader y fragment shader. El primero se encarga de procesar las posiciones de los vértices, y el segundo de los colores de esos vértices. Cabe aclarar que en OpenGL se le llama "vértice" a un objeto que tiene un conjunto de atributos: posición, color, posición de textura o normal, por ejemplo.
 
-Para la preparación de los datos, primero se crea un Vertex Buffer Object (VBO), que es un objeto que vive globalmente en toda la aplicación OpenGL (todo aquí son objetos globales, y esta API es una máquina de estados finita) y es el encargado de almacenar datos de un vértice. Con `glGenBuffers()` se le dice a OpenGL que prepare algún espacio de memoria para luego yo mandarle datos, y se nos devuelve un ID de ese, o esos, buffers. En este caso es solo uno.
+Para la preparación de los datos, que en este caso simplemente serán los vértices del triángulo, primero se crea un Vertex Buffer Object (VBO), un objeto que vive globalmente en toda la aplicación OpenGL (todo aquí son objetos globales, y esta API es una máquina de estados finita) y es el encargado de almacenar datos de un vértice. Con `glGenBuffers()` se le dice a OpenGL que prepare algún espacio de memoria para luego yo mandarle datos, y se nos devuelve un ID de ese, o esos, buffers. En este caso es solo uno.
 
-Con `glBindBuffer()` se ingresa el ID de un buffer ya generado para especificar que todo lo que se hará de aquí en adelante relacionado a operaciones con buffers se lo hará con el buffer del ID proporcionado.
+Cabe aclarar por qué las posiciones tienen esas coordenadas, y es que el espacio disponible en OpenGL conforma un sistema de coordenadas con rango [-1.0,1.0], tanto en el eje X como en el eje Y, y en el Z. ¿Cómo se hace entonces para usar cualquier tipo de resolución que tengamos en pantalla? Se configura el llamado "viewport" en OpenGL con la función `glViewport()` para que que el punto extremo derecho 1.0, por ejemplo, sea el extremo derecho del viewport configurado. Esto NO significa que ahora nuestro sistema de coordenadas cambió, sino que ahora las renderizaciones saldrán deformadas pero adaptadas al tamaño de la ventana. Para efectivamente tener un nuevo sistema de coordenadas, se debe realizar una transformación ortogonal sobre todos nuestros vértices. Pero ello es para después.
+
+Siguiendo, con `glBindBuffer()` se ingresa el ID de un buffer ya generado para especificar que todo lo que se hará de aquí en adelante relacionado a operaciones con buffers se lo hará con el buffer del ID proporcionado.
 
 Con `glBufferData()` finalmente se asocian los datos que tengo en el arreglo `triangle_positions` al buffer asociado con `glBindBuffer()`.
 
@@ -41,9 +43,11 @@ In summary, to achieve this, a shader program has to be built, which we will jus
 
 A shader is imperatively composed of two types of shaders that are then linked to build the program: vertex shader and fragment shader. The first one is in charge of processing the positions of the vertices, and the second one the colors of those vertices. It's worth clarifying that in OpenGL a "vertex" is called an object that has a set of attributes: position, color, texture position or normal, for example.
 
-For the sake of data preparing, a Vertex Buffer Object (VBO) is created first, which is an object that lives globally in the whole OpenGL application (everything here are global objects, and this API is a finite state machine) and it's the one in charge of storing the data of a vertex. With `glGenBuffers()` you tell OpenGL to prepare some memory space to then send data to it, and we get back an ID of that buffer.
+For the sake of data preparing, which in this case are the triangle vertex positions, a Vertex Buffer Object (VBO) is created first, an object that lives globally in the whole OpenGL application (everything here are global objects, and this API is a finite state machine) and it's the one in charge of storing the data of a vertex. With `glGenBuffers()` you tell OpenGL to prepare some memory space to then send data to it, and we get back an ID of that buffer.
 
-With `glBindBuffer()` you pass the ID of an already generated buffer to specify that everything that will be done from now on related to buffer operations will be done with the buffer of the provided ID.
+It's worth clarifying why the positions have those coordinates. The available space in OpenGL makes a coordinate system with the range [-1.0,1.0] in the three axes. How do we use any resolution we desire in our window then? We configure the OpenGL _viewport_ with the function `glViewport()` so that the right end x=1.0 will be the configured viewport right end, for instance. This DOESN'T mean that our coordinates system changed, but that the renders will may now be deformed but adapted to the window size. For a truly new coordinate system, we have to apply an orthogonal transformation over all our vertices. But, we'll see that later.
+
+Going back with the data, with `glBindBuffer()` you pass the ID of an already generated buffer to specify that everything that will be done from now on related to buffer operations will be done with the buffer of the provided ID.
 
 With `glBufferData()` the data from `triangle_positions` is finally associated to the buffer bound with `glBindBuffer()`.
 
