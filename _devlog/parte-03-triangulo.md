@@ -33,6 +33,8 @@ Un pequeño detalle del que me perdí mientras escribía el código es el hecho 
 
 El VAO puede ser asociado también justo antes de comenzar el bucle, por supuesto. Pero normalmente se lo hace cada vez que se itera, y antes de llamar a la función de dibujado, porque en un motor real no tenemos un solo VAO para pintar, sino muchos de ellos esperando su turno. Por lo que lo correcto es asociar el VAO deseado antes del `glDrawArrays()`.
 
+Material de referencia usado en este video: el libro rojo de OpenGL (OpenGL Programming Guide), y [La documentación oficial de OpenGL](https://docs.gl)
+
 </div>
 
 <div class="lang-en" markdown="1">
@@ -60,5 +62,7 @@ Finally in the loop, the data specified within the enabled VAO is drawn and we h
 One small detail that I missed in the code is that I could have just unbind the VAO before unbinding the VBO right before starting the loop. Then in the loop, it could have been enough to just bind the VAO before calling the draw function. Honestly, I didn't know what I was doing until now, that I re-enforced the concept of the Vertex Array Object.
 
 The VAO can be bound right before starting the loop, of course. But we normally do it every time the loop iterates because in a real engine we don't have just one VAO to draw, but many of them waiting to be drawn. So the right approach is binding the desired VAO right before calling `glDrawArrays()`.
+
+Reference material used in this tutorial: the red book of OpenGL (OpenGL Programming Guide), and [OpenGL official documentation](https://docs.gl)
 
 </div>
