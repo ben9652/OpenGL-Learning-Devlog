@@ -27,3 +27,4 @@ kramdown:
 
 exclude:
   - README.md
+  - tools

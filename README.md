@@ -11,6 +11,7 @@ _layouts/              plantillas (default y post)
 assets/css/style.css   tema oscuro
 assets/img/            imágenes de los posts
 assets/video/          videos de las partes (MP4 comprimido)
+tools/                 scripts de conversión de videos
 _devlog/               partes publicadas (una por archivo)
 _drafts/               borradores (ignorados por git, no se publican)
 ```
@@ -54,12 +55,16 @@ _drafts/               borradores (ignorados por git, no se publican)
 
 El sitio arranca en inglés y el selector lo cambia todo a español; la elección se recuerda en el navegador.
 
-Los videos se transcodifican a 1080p para que pesen poco y se muestran arriba del texto:
+Los videos se transcodifican a 1080p para que pesen poco y se muestran arriba del texto. El script se encarga de todo:
 
 ```bash
-ffmpeg -i original.mp4 -vf "scale=1920:-2" -c:v libx264 -preset medium \
-  -crf 24 -pix_fmt yuv420p -c:a aac -b:a 128k -movflags +faststart \
-  assets/video/parte-XX.mp4
+./tools/transcode-video.sh 3
+```
+
+Busca `3. ...` en `~/Videos/DaVinci-Resolve/OpenGLPath` y genera `assets/video/parte-03.mp4`. También acepta una ruta y un nombre de salida:
+
+```bash
+./tools/transcode-video.sh "otro video.mp4" parte-05.mp4
 ```
 
 Cada parte lo referencia en su front matter con `video_file: "parte-XX.mp4"`.
