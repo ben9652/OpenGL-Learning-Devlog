@@ -69,6 +69,19 @@ Busca `3. ...` en `~/Videos/DaVinci-Resolve/OpenGLPath` y genera `assets/video/p
 
 Cada parte lo referencia en su front matter con `video_file: "parte-XX.mp4"`.
 
+## Analítica (GoatCounter)
+
+El sitio puede registrar visitas por artículo con [GoatCounter](https://www.goatcounter.com/) (gratis para uso no comercial, sin cookies, sin banner de consentimiento).
+
+1. Crear una cuenta y elegir un código de sitio (por ejemplo `ben9652`).
+2. En `_config.yml` completar:
+
+   ```yaml
+   goatcounter: "ben9652"
+   ```
+
+3. Listo: el dashboard muestra las páginas más visitadas, los referrers y los países. Con la variable vacía no se carga ningún script.
+
 ## Imágenes
 
 Subirlas a `assets/img/` y referenciarlas así:
