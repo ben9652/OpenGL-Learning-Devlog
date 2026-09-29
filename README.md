@@ -93,6 +93,27 @@ El token vive en `~/.config/analytics/token` (no se versiona). Ejemplos:
 
 Las IPs a excluir siempre se pueden dejar en `~/.config/analytics/ignore` (una por línea).
 
+### Consultar la base directamente
+
+El helper consulta por SSH (sin exponer MySQL) y trae las consultas armadas:
+
+```bash
+./tools/db.sh resumen            # totales de todo el tiempo
+./tools/db.sh articulos 30       # visitas por artículo (30 días)
+./tools/db.sh dias 30            # por día
+./tools/db.sh horas 7            # por hora del día
+./tools/db.sh ips 30             # por IP
+./tools/db.sh referrers 30       # referrers
+./tools/db.sh idiomas 30         # idioma elegido
+./tools/db.sh ultimas 20         # últimas visitas
+./tools/db.sh detalle triangulo  # busca en path y título
+./tools/db.sh borrar-ip 1.2.3.4  # borra las visitas de una IP
+./tools/db.sh                    # shell interactiva de MariaDB
+./tools/db.sh "SELECT ..."       # SQL crudo
+```
+
+Requiere una sola vez en la lab: `sudo mariadb` y crear el usuario `bboeri`@`localhost` con `unix_socket` y `GRANT ALL ON analytics.*`. Las IPs de `~/.config/analytics/ignore` se excluyen por defecto en los agregados; `--todos` las incluye.
+
 ## Imágenes
 
 Subirlas a `assets/img/` y referenciarlas así:
