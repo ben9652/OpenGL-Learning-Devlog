@@ -74,11 +74,14 @@ Cada parte lo referencia en su front matter con `video_file: "parte-XX.mp4"`.
 El sitio registra las visitas en una API propia (Go + MariaDB) que corre en `boeri-lab.ddns.net`:
 
 ```text
-POST https://boeri-lab.ddns.net/analytics/hit     (lo llama el sitio)
+POST https://boeri-lab.ddns.net/analytics/hit     (registra la visita; lo llama el sitio)
+POST https://boeri-lab.ddns.net/analytics/leave   (suma tiempo de lectura; lo llama el sitio)
 GET  https://boeri-lab.ddns.net/analytics/stats   (requiere token)
 ```
 
 El endpoint se configura en `_config.yml` con `analytics_url` (vacío = no se envía nada).
+
+Además del artículo, se registra el **tiempo activo de lectura** (el cronómetro se pausa cuando la pestaña queda oculta) y un **id de sesión** para sumar el tiempo total cuando se recorren varias partes.
 
 ### Estadísticas en la terminal
 
@@ -104,6 +107,7 @@ El helper consulta por SSH (sin exponer MySQL) y trae las consultas armadas:
 ./tools/db.sh horas 7            # por hora del día
 ./tools/db.sh ips 30             # por IP
 ./tools/db.sh referrers 30       # referrers
+./tools/db.sh sesiones 30        # sesiones con tiempo total
 ./tools/db.sh idiomas 30         # idioma elegido
 ./tools/db.sh ultimas 20         # últimas visitas
 ./tools/db.sh detalle triangulo  # busca en path y título

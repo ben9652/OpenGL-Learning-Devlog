@@ -95,20 +95,73 @@
   {% if site.analytics_url and site.analytics_url != "" %}
   <script>
     (function () {
+      var HIT = "{{ site.analytics_url }}";
+      var LEAVE = HIT.replace(/\/hit$/, "/leave");
+      var id = null;
+      var active = 0;
+      var last = document.visibilityState === "visible" ? Date.now() : 0;
+      var session = "";
+
       try {
-        fetch("{{ site.analytics_url }}", {
+        session = sessionStorage.getItem("devlog-session") || "";
+        if (!session) {
+          session = Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+          sessionStorage.setItem("devlog-session", session);
+        }
+      } catch (e) {}
+
+      function post(url, data, beacon) {
+        var body = JSON.stringify(data);
+        if (beacon && navigator.sendBeacon) {
+          try { navigator.sendBeacon(url, body); return; } catch (e) {}
+        }
+        try {
+          fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: body,
+            keepalive: true,
+            mode: "cors"
+          });
+        } catch (e) {}
+      }
+
+      try {
+        fetch(HIT, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             path: location.pathname,
             title: document.title,
             lang: document.documentElement.lang,
-            referrer: document.referrer || ""
+            referrer: document.referrer || "",
+            session: session
           }),
           keepalive: true,
           mode: "cors"
-        });
+        }).then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (j) { if (j && j.id) id = j.id; })
+          .catch(function () {});
       } catch (e) {}
+
+      function accumulate() {
+        var now = Date.now();
+        if (last) active += now - last;
+        last = document.visibilityState === "visible" ? now : 0;
+      }
+
+      function report() {
+        accumulate();
+        if (!id || active <= 0) return;
+        post(LEAVE, { id: id, duration_ms: active }, true);
+        active = 0;
+      }
+
+      document.addEventListener("visibilitychange", function () {
+        if (document.visibilityState === "hidden") report();
+        else last = Date.now();
+      });
+      window.addEventListener("pagehide", report);
     })();
   </script>
   {% endif %}

@@ -17,6 +17,7 @@
 #   horas [días]           distribución por hora del día (7)
 #   ips [días]             visitas por IP (30)
 #   referrers [días]       referrers (30)
+#   sesiones [días]        sesiones con tiempo total (30)
 #   idiomas [días]         idiomas elegidos (30)
 #   resumen                totales de todo el tiempo
 #   detalle <texto> [días] visitas que contienen el texto (7)
@@ -51,6 +52,7 @@ Uso: db.sh <consulta> [args]
   horas [días]           distribución por hora del día (7)
   ips [días]             visitas por IP (30)
   referrers [días]       referrers (30)
+  sesiones [días]        sesiones con tiempo total (30)
   idiomas [días]         idiomas elegidos (30)
   resumen                totales de todo el tiempo
   detalle <texto> [días] visitas que contienen el texto (7)
@@ -112,7 +114,9 @@ case "$CMD" in
   ultimas)
     n="$(num "${POS[1]:-20}")"
     run_sql "SELECT DATE_FORMAT(ts,'%Y-%m-%d %H:%i') AS fecha, ip, lang,
-                    title, IF(referrer='','',referrer) AS referrer
+                    title,
+                    IF(duration_ms IS NULL,'-',SEC_TO_TIME(ROUND(duration_ms/1000))) AS tiempo,
+                    IF(referrer='','',referrer) AS referrer
              FROM hits ORDER BY ts DESC LIMIT $n;"
     ;;
 
@@ -120,7 +124,8 @@ case "$CMD" in
     d="$(num "${POS[1]:-7}")"
     run_sql "SELECT TRIM(TRAILING ' · OpenGL path from scratch' FROM
                       TRIM(TRAILING ' · Ruta OpenGL desde cero' FROM MAX(title))) AS articulo,
-                    COUNT(*) AS visitas
+                    COUNT(*) AS visitas,
+                    IFNULL(SEC_TO_TIME(ROUND(AVG(duration_ms)/1000)),'-') AS prom
              FROM hits
              WHERE ts >= NOW() - INTERVAL $d DAY$excl_sql
              GROUP BY path ORDER BY visitas DESC;"
@@ -159,6 +164,16 @@ case "$CMD" in
              GROUP BY referrer ORDER BY visitas DESC LIMIT 25;"
     ;;
 
+  sesiones)
+    d="$(num "${POS[1]:-30}")"
+    run_sql "SELECT session, COUNT(*) AS paginas,
+                    IFNULL(SEC_TO_TIME(ROUND(SUM(duration_ms)/1000)),'-') AS tiempo
+             FROM hits
+             WHERE session IS NOT NULL AND session <> ''
+               AND ts >= NOW() - INTERVAL $d DAY$excl_sql
+             GROUP BY session ORDER BY SUM(duration_ms) DESC LIMIT 25;"
+    ;;
+
   idiomas)
     d="$(num "${POS[1]:-30}")"
     run_sql "SELECT lang, COUNT(*) AS visitas
@@ -170,6 +185,7 @@ case "$CMD" in
   resumen)
     run_sql "SELECT COUNT(*) AS visitas, COUNT(DISTINCT ip) AS ips,
                     COUNT(DISTINCT path) AS articulos,
+                    IFNULL(SEC_TO_TIME(ROUND(SUM(duration_ms)/1000)),'-') AS tiempo,
                     DATE_FORMAT(MIN(ts),'%Y-%m-%d %H:%i') AS primera,
                     DATE_FORMAT(MAX(ts),'%Y-%m-%d %H:%i') AS ultima
              FROM hits WHERE 1=1$excl_sql;"
@@ -179,7 +195,9 @@ case "$CMD" in
     txt="${POS[1]:?falta el texto a buscar}"
     d="$(num "${POS[2]:-7}")"
     esc="${txt//\'/\'\'}"
-    run_sql "SELECT DATE_FORMAT(ts,'%Y-%m-%d %H:%i') AS fecha, ip, lang, path
+    run_sql "SELECT DATE_FORMAT(ts,'%Y-%m-%d %H:%i') AS fecha, ip, lang,
+                    IF(duration_ms IS NULL,'-',SEC_TO_TIME(ROUND(duration_ms/1000))) AS tiempo,
+                    path
              FROM hits
              WHERE ts >= NOW() - INTERVAL $d DAY
                AND (path LIKE '%$esc%' OR title LIKE '%$esc%')

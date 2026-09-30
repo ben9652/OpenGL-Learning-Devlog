@@ -35,7 +35,7 @@ usage() {
 Uso: stats.sh [opciones]
 
 Opciones:
-  --detalle            lista cada visita (fecha, hora, IP, idioma, referrer)
+  --detalle            lista cada visita (fecha, hora, IP, idioma, tiempo, referrer)
   --days N             últimos N días (por defecto 7)
   --start FECHA        fecha inicial (YYYY-MM-DD)
   --end FECHA          fecha final (YYYY-MM-DD)
@@ -108,6 +108,17 @@ if ! jq -e '.total != null' <<<"$json" >/dev/null 2>&1; then
   exit 1
 fi
 
+JQ_FMT='
+  def fmtms:
+    if (. // 0) <= 0 then "-"
+    else ((. / 1000) | floor) as $s
+    | if $s >= 3600 then "\(($s / 3600) | floor)h \(($s % 3600) / 60 | floor)m"
+      elif $s >= 60 then "\(($s / 60) | floor)m \($s % 60)s"
+      else "\($s)s"
+      end
+    end;
+'
+
 bar() {
   local n="$1"
   if [ "$n" -gt 0 ]; then
@@ -116,7 +127,7 @@ bar() {
 }
 
 print_rows() {
-  local max=0 count label width=44 line
+  local max=0 count label width=52 line
   local rows=()
 
   while IFS= read -r line; do
@@ -162,7 +173,11 @@ fi
 hr
 
 printf '\n RESUMEN\n'
-printf '   visitas: %s\n' "$(jq -r '.total' <<<"$json")"
+jq -r "$JQ_FMT"'
+  "   visitas:          \(.total)",
+  "   tiempo total:     \(.total_ms | fmtms)",
+  "   tiempo promedio:  \(.avg_ms | fmtms)"
+' <<<"$json"
 
 printf '\n POR DÍA\n'
 jq -r '.by_day[]? | "\(.count)\t\(.name)"' <<<"$json" | print_rows
@@ -171,10 +186,16 @@ printf '\n POR HORA\n'
 jq -r '.by_hour[]? | "\(.count)\t\(.name):00"' <<<"$json" | print_rows
 
 printf '\n ARTÍCULOS\n'
-jq -r '
+jq -r "$JQ_FMT"'
   def limpio: sub(" · (OpenGL path from scratch|Ruta OpenGL desde cero)$"; "");
   .by_path[]?
-  | "\(.count)\t\(if (.title // "") != "" then (.title | limpio) else .path end)"
+  | "\(.count)\t\(if (.title // "") != "" then (.title | limpio) else .path end)\(if .avg_ms > 0 then "  ·  prom \(.avg_ms | fmtms)" else "" end)"
+' <<<"$json" | print_rows
+
+printf '\n SESIONES\n'
+jq -r "$JQ_FMT"'
+  .by_session[]?
+  | "\(.count)\t\(.name)  ·  \(.total_ms | fmtms)"
 ' <<<"$json" | print_rows
 
 printf '\n IPS\n'
@@ -185,7 +206,7 @@ jq -r '.by_referrer[]? | select(.name != "") | "\(.count)\t\(.name)"' <<<"$json"
 
 if [ "$DETAIL" -eq 1 ]; then
   printf '\n DETALLE DE VISITAS\n'
-  jq -r '
+  jq -r "$JQ_FMT"'
     def limpio: sub(" · (OpenGL path from scratch|Ruta OpenGL desde cero)$"; "");
     .visits
     | group_by(.path)
@@ -197,7 +218,7 @@ if [ "$DETAIL" -eq 1 ]; then
     | sort_by(-(.rows | length))
     | .[]
     | "\n   \(.title)  (\(.rows | length))",
-      (.rows[] | "     \(.ts)  \(.ip)  [\(.lang)]\(if .referrer != "" then "  ref: \(.referrer)" else "" end)")
+      (.rows[] | "     \(.ts)  \(.ip)  [\(.lang)]\(if .duration_ms > 0 then "  \(.duration_ms | fmtms)" else "" end)\(if .referrer != "" then "  ref: \(.referrer)" else "" end)")
   ' <<<"$json"
 fi
 
