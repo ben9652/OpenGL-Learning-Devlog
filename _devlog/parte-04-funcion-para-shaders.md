@@ -23,7 +23,7 @@ La próxima parte será sobre index buffers, que es una manera más óptima de d
 
 <div class="lang-en" markdown="1">
 
-Here I'm just separating shader compiling into an independent header file. Moving forward I'll be improving this way of doing it, splitting the process in clear independent stages.
+Here I'm just separating shader compilation into an independent header file. Moving forward I'll be improving this way of doing it, splitting the process in clear independent stages.
 
 Furthermore, you can see how I'm getting rid of the variable that stores the shader source code to put it into independent files. That way, it will be easier to write them.
 
